@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #fff4e6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+
+.sidebar {
+    width: 30%;
+    background-color: white;
+    height: 100%;
+    padding: 30px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.logo-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    margin-right: 10px;
+}
+
+.add-icon {
+    font-size: 24px;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.counter {
+    margin: 30px 0;
+    font-size: 14px;
+    color: #b28c60;
+}
+
+.counter span {
+    font-weight: bold;
+}
+
+.photographer-title {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    position: absolute;
+    bottom: 150px;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.main-content {
+    flex: 1;
+    background-color: #333;
+    color: white;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+/* Extended header that overlaps the main content */
+.header-extension {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 65%;
+    height: 80px;
+    z-index: 5;
+}
+
+.header-extension::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background-color: white;
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    opacity: 1;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-left: 30px;
+}
+
+.social-icons a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.social-icons a:hover {
+    opacity: 1;
+}
+
+.slider {
+    height: 100%;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 80px;
+    left: 40px;
+    z-index: 12;
+}
+
+.slide-number {
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.slide-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.author-name {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+.author-thumbnail {
+    position: absolute;
+    bottom: 20px;
+    left: -50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+    z-index: 100;
+}
+
+.author-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.navigation {
+    position: absolute;
+    bottom: 80px;
+    right: 40px;
+    display: flex;
+    gap: 15px;
+    z-index: 5;
+}
+
+.nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
+.vertical-text {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 5;
+    white-space: nowrap;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+    z-index: 2;
+}
