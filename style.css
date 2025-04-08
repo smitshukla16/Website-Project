@@ -10,6 +10,53 @@ body {
     color: #333;
     overflow-x: hidden;
     font-size: 16px; /* Example base font size for rem calculation */
+    min-height: 100vh;
+    width: 100vw;
+}
+
+/* Orientation message styles */
+.orientation-message {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff4e6;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeOut 0.5s ease-in-out 5s forwards; /* Fade out after 5 seconds */
+}
+
+.orientation-content {
+    padding: 5vw;
+}
+
+.orientation-content i {
+    font-size: 15vw;
+    margin-bottom: 5vw;
+    color: #333;
+    animation: rotate 2s infinite ease-in-out;
+}
+
+.orientation-content p {
+    font-size: 4vw;
+    color: #333;
+    max-width: 80vw;
+    margin: 0 auto;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
 }
 
 .container {
@@ -365,4 +412,51 @@ body {
     z-index: 5;
     white-space: nowrap;
     color: white; /* Ensure visibility */
+}
+
+/* Force landscape mode on mobile devices - MOVED TO END */
+@media screen and (max-width: 1024px) {
+    /* Portrait mode - show message for 5 seconds */
+    @media (orientation: portrait) {
+        .orientation-message {
+            display: flex; /* Show the orientation message */
+        }
+    }
+    
+    /* Always display in landscape mode after 5 seconds */
+    .container {
+        display: block !important; /* Always show the main content */
+        transform-origin: top left;
+        transform: scale(calc(100vw / 1024)); /* Scale based on viewport width */
+        width: calc(1024px); /* Set a fixed width */
+        height: calc(100vh / (100vw / 1024)); /* Adjust height to maintain aspect ratio */
+    }
+    
+    /* Fix scaling issues for mobile landscape mode */
+    .slide-sidebar {
+        width: 25% !important; /* Adjust sidebar width */
+    }
+    
+    .header-extension {
+        height: 40px !important; /* Reduce header extension height */
+        left: 25%; /* Adjust position relative to sidebar */
+        /* Ensure width is adjusted if needed based on new left position */
+        width: calc(60% - 25% - 2vw); /* Example: Adjust width considering right padding */
+    }
+    
+    .slide-number {
+        left: 25%; /* Align with sidebar */
+        /* Add margin-left if needed for spacing */
+        margin-left: 2vw; /* Example: add some space */
+        top: 10vh; /* Adjust vertical position slightly */
+    }
+    
+    .author-thumbnail {
+        left: 25%; /* Align with sidebar */
+        /* Adjust transform to center on the new edge */
+        transform: translateX(0); /* Remove the negative transform */
+        /* Add margin-left if needed for centering/spacing */
+        margin-left: -2.2vw; /* Center based on its width (4.4vw / 2) */
+        bottom: 4vh; /* Adjust vertical position slightly */
+    }
 }
