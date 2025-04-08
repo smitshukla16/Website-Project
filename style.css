@@ -2,85 +2,26 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif; /* Consider setting a base font-size on html or body for rem units */
 }
 
 body {
     background-color: #fff4e6;
     color: #333;
     overflow-x: hidden;
+    font-size: 16px; /* Example base font size for rem calculation */
 }
 
 .container {
-    display: flex;
     height: 100vh;
     position: relative;
 }
 
-.sidebar {
-    width: 30%;
-    background-color: white;
-    height: 100%;
-    padding: 30px;
-    position: relative;
-    z-index: 10;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-.logo-circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #000;
-    margin-right: 10px;
-}
-
-.add-icon {
-    font-size: 24px;
-    margin: 20px 0;
-    cursor: pointer;
-}
-
-.counter {
-    margin: 30px 0;
-    font-size: 14px;
-    color: #b28c60;
-}
-
-.counter span {
-    font-weight: bold;
-}
-
-.photographer-title {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    position: absolute;
-    bottom: 150px;
-    font-size: 18px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.main-content {
-    flex: 1;
-    background-color: #333;
-    color: white;
-    position: relative;
-    /* overflow: hidden; */
-}
-
-/* Extended header that overlaps the main content */
 .header-extension {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 65%;
+    left: 30%;
+    width: 40%;
     height: 80px;
     z-index: 5;
 }
@@ -95,28 +36,60 @@ body {
     background-color: white;
 }
 
+.main-content {
+    width: 100%;
+    height: 100%;
+    color: white;
+    position: relative;
+}
+
 .nav {
     display: flex;
-    justify-content: flex-end;
-    padding: 30px;
+    justify-content: space-between; /* Space out logo and right group */
+    align-items: center; /* Vertically align items */
+    padding: 2vw 3vw; /* Adjust padding (top/bottom left/right) */
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
+    left: 0; /* Position from the left */
+    width: 100%; /* Span full width */
+    z-index: 20;
+}
+
+/* New Logo Styles */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    color: black;
+    font-weight: 600;
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+}
+
+.logo-circle {
+    width: clamp(12px, 1.5vw, 18px);
+    height: clamp(12px, 1.5vw, 18px);
+    background-color: black;
+    border-radius: 50%;
+}
+
+/* Container for right-aligned items */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2vw; /* Space between links and icons */
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 2vw;
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
+    font-size: clamp(0.7rem, 0.75vw, 0.9rem); /* Adjusted size */
+    letter-spacing: 0.1vw;
     opacity: 0.7;
     transition: opacity 0.3s ease;
 }
@@ -127,8 +100,7 @@ body {
 
 .social-icons {
     display: flex;
-    gap: 15px;
-    margin-left: 30px;
+    gap: 1.5vw; /* Adjusted gap */
 }
 
 .social-icons a {
@@ -136,6 +108,7 @@ body {
     text-decoration: none;
     opacity: 0.7;
     transition: opacity 0.3s ease;
+    font-size: clamp(0.9rem, 1vw, 1.1rem); /* Slightly larger icons */
 }
 
 .social-icons a:hover {
@@ -143,8 +116,10 @@ body {
 }
 
 .slider {
-    height: 100%;
     position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .slide {
@@ -153,59 +128,129 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    opacity: 0; /* Slide container is initially invisible */
+    visibility: hidden; /* Use visibility to prevent interaction when hidden */
+    transition: opacity 0s 1.5s, visibility 0s 1.5s; /* Delay hiding until image animation finishes */
+    z-index: 0; /* Non-active slides are behind */
 }
 
 .slide.active {
-    opacity: 1;
+    opacity: 1; /* Make active slide container visible */
+    visibility: visible; /* Make it interactable */
+    z-index: 1; /* Active slide is on top */
+    transition: opacity 0s, visibility 0s; /* Show immediately */
 }
 
 .slide-image {
+    position: absolute; /* Position image within the slide */
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    clip-path: circle(0% at center); /* Start fully clipped */
+    transition: clip-path 1.5s ease-in-out; /* Animate only the clip-path */
+    z-index: 1; /* Base z-index for image */
 }
 
-.slide-content {
+.slide.active .slide-image {
+    clip-path: circle(150% at center); /* Expand image when slide is active */
+}
+
+/* Optional: Style for elements within the slide if needed */
+.slide-sidebar, .overlay, .slide-number, .author-thumbnail {
+    position: absolute; /* Position elements within the slide */
+    z-index: 2; /* Ensure content is above the image */
+}
+
+.overlay {
     position: absolute;
-    bottom: 80px;
-    left: 40px;
-    z-index: 12;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+    z-index: 2; /* Above image, below content */
 }
 
-.slide-number {
-    font-size: 48px;
-    font-weight: 300;
-    margin-bottom: 10px;
+.slide-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%; /* Sidebar width */
+    height: 100%;
+    background-color: white;
+    z-index: 3;
+    padding: 2vw;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack flex items vertically */
+    justify-content: flex-end; /* Push content to the bottom */
+    align-items: center; /* Center content horizontally */
+}
+
+/* New container for title and description */
+.sidebar-content {
+    /* This container will hold the vertical text blocks */
+    /* No specific display needed, children will flow naturally */
+    margin-bottom: 10vh; /* Space from the bottom edge */
+    width: auto; /* Allow content to determine width */
+    display: flex; /* Use flex to stack title/desc */
+    flex-direction: row; /* Stack title above desc */
+    align-items: baseline; /* Center title/desc within this block */
 }
 
 .slide-title {
-    font-size: 18px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 10px;
+    letter-spacing: 0.1vw;
+    color: #333;
+    /* Control space between title and description */
+    margin-bottom: 1vh; /* Adjust as needed */
+    white-space: nowrap;
+    /* align-self: center; */ /* REMOVE this */
 }
 
-.author-name {
-    font-size: 14px;
-    opacity: 0.7;
-    margin-top: 5px;
+.slide-description {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    color: #555;
+    /* margin-bottom: 10vh; */ /* REMOVE this, margin is on parent */
+    white-space: nowrap;
+    /* align-self: center; */ /* REMOVE this */
+    max-height: 50%;
+    text-align: center;
+}
+
+.slide-number {
+    position: absolute;
+    top: 15vh;
+    left: 33vw;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 300;
+    z-index: 4;
+    color: white;
+    opacity: 0; /* Start transparent by default */
+    transition: opacity 0.5s ease-in-out 0.15s; /* Fade in over 0.5s after a 0.3s delay */
+}
+
+.slide.active .slide-number {
+    opacity: 1; /* Active slide number is opaque */
 }
 
 .author-thumbnail {
     position: absolute;
-    bottom: 20px;
-    left: -50%;
-    width: 50px;
-    height: 50px;
+    bottom: 6vh;
+    left: 30vw; /* Center on the dividing line */
+    transform: translateX(-50%);
+    width: clamp(40px, 4vw, 60px);
+    height: clamp(40px, 4vw, 60px);
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid white;
-    z-index: 100;
+    border: clamp(1px, 0.15vw, 3px) solid white;
+    z-index: 5; /* Above slide number */
 }
 
 .author-thumbnail img {
@@ -216,16 +261,16 @@ body {
 
 .navigation {
     position: absolute;
-    bottom: 80px;
-    right: 40px;
+    bottom: 8vh;
+    right: 3vw;
     display: flex;
-    gap: 15px;
-    z-index: 5;
+    gap: 1vw;
+    z-index: 20; /* Keep navigation controls on top */
 }
 
 .nav-btn {
-    width: 40px;
-    height: 40px;
+    width: clamp(30px, 3vw, 50px); /* Use clamp */
+    height: clamp(30px, 3vw, 50px); /* Use clamp */
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.3);
     display: flex;
@@ -239,26 +284,16 @@ body {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-
 .vertical-text {
     position: absolute;
-    right: 30px;
+    right: 2vw;
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 12px;
+    letter-spacing: 0.15vw;
+    font-size: clamp(0.7rem, 1vw, 1rem);
     font-weight: 600;
     z-index: 5;
     white-space: nowrap;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
-    z-index: 2;
+    color: white; /* Ensure visibility */
 }
