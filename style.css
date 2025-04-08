@@ -206,10 +206,29 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.1vw;
     color: #333;
-    /* Control space between title and description */
-    margin-bottom: 1vh; /* Adjust as needed */
+    margin-bottom: 1vh;
     white-space: nowrap;
-    /* align-self: center; */ /* REMOVE this */
+    /* Add display: inline-block or block if needed for vertical layout */
+    display: inline-block; /* Helps with vertical layout */
+    overflow: hidden; /* Prevent overflow during animation */
+    font-size: clamp(1.5rem, 3vw, 3rem); /* Adjust font size */
+    letter-spacing: 0.1em;
+}
+
+/* Style for individual characters */
+.slide-title .title-char {
+    display: inline-block; /* Treat each char as a block for transform */
+    opacity: 0;
+    transform: translateX(100%); /* Start fully to the right */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* Smooth fade and slide */
+    transition-delay: 0s; /* Base delay, overridden by stagger */
+}
+
+/* Trigger animation for characters in the ACTIVE slide */
+.slide.active .slide-title .title-char {
+    opacity: 1;
+    transform: translateX(0); /* Move to the final position */
+    transition-delay: calc(var(--char-index) * 0.1s); /* Staggered delay */
 }
 
 .slide-description {
@@ -245,18 +264,68 @@ body {
     bottom: 6vh;
     left: 30vw; /* Center on the dividing line */
     transform: translateX(-50%);
-    width: clamp(40px, 4vw, 60px);
-    height: clamp(40px, 4vw, 60px);
+    /* Make size slightly larger to accommodate ring stroke */
+    width: clamp(44px, 4.4vw, 66px); /* Increased size */
+    height: clamp(44px, 4.4vw, 66px); /* Increased size */
     border-radius: 50%;
-    overflow: hidden;
-    border: clamp(1px, 0.15vw, 3px) solid white;
+    /* Remove border: clamp(...) if it exists */
+    /* border: clamp(1px, 0.15vw, 3px) solid white; */
+    /* Remove overflow: hidden if it exists */
+    /* overflow: hidden; */
     z-index: 5; /* Above slide number */
+    display: flex; /* Center image inside */
+    align-items: center;
+    justify-content: center;
+    /* Add position relative so SVG can be absolute inside */
 }
 
 .author-thumbnail img {
+    /* Adjust size to fit inside the ring */
+    width: calc(100% - 8px); /* Container width minus space for ring stroke */
+    height: calc(100% - 8px);
+    object-fit: cover;
+    border-radius: 50%; /* Keep image circular */
+    display: block;
+    /* Ensure image is behind the SVG ring */
+    position: relative;
+    z-index: 1;
+}
+
+.progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* Rotate to start the stroke from the top */
+    transform: rotate(-90deg);
+    z-index: 2; /* Ensure ring is above the image */
+    pointer-events: none; /* Allow clicks to pass through to image/thumbnail div if needed */
+}
+
+.progress-ring-circle {
+    /* Circumference = 2 * PI * r = 2 * 3.14159 * 16 = ~100.53 */
+    stroke-dasharray: 100.53 100.53;
+    stroke-dashoffset: 100.53; /* Start fully dashed (invisible/empty) */
+    stroke-linecap: round; /* Optional: makes the line ends rounded */
+    /* Animation will be applied via .slide.active */
+    transition: stroke-dashoffset 0.1s linear; /* Smooth transition for reset */
+}
+
+/* Animation definition */
+@keyframes progress-stroke {
+    from {
+        stroke-dashoffset: 100.53; /* Start empty */
+    }
+    to {
+        stroke-dashoffset: 0; /* Animate to full */
+    }
+}
+
+/* Apply animation ONLY to the circle within the ACTIVE slide */
+.slide.active .progress-ring-circle {
+    /* Apply the animation: 5s duration, linear timing, stay at end state */
+    animation: progress-stroke 5s linear forwards;
 }
 
 .navigation {
