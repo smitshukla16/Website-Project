@@ -62,6 +62,9 @@ body {
 .container {
     height: 100vh;
     position: relative;
+    width: 100%; /* Default width */
+    background-color: #fff4e6; /* Added background to container for visual clarity */
+    overflow: hidden; /* Hide overflow by default */
 }
 
 .header-extension {
@@ -414,49 +417,126 @@ body {
     color: white; /* Ensure visibility */
 }
 
-/* Force landscape mode on mobile devices - MOVED TO END */
+/* Force landscape view / scaling on mobile devices */
 @media screen and (max-width: 1024px) {
-    /* Portrait mode - show message for 5 seconds */
+
+    /* PORTRAIT: Rotate container to simulate landscape */
     @media (orientation: portrait) {
+        /* Hide overflow on body to prevent potential scrollbars */
+        body {
+            overflow: hidden;
+            background-color: #333; /* Optional: Background for area outside rotated container */
+        }
+        .container {
+            transform-origin: top left;
+            width: 100vh; /* Use viewport height as width */
+            height: 100vw; /* Use viewport width as height */
+            transform: rotate(90deg) translateY(-100%);
+            overflow: hidden; /* Clip content within the rotated container */
+
+            /* Position the rotated container correctly */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Adjust child element styles if needed within rotated container */
+        /* These percentages now refer to the container's new dimensions (100vh width) */
+        .slide-sidebar {
+             width: 25%; 
+        }
+        .header-extension {
+             height: 40px; 
+             left: 25%; 
+             width: calc(100% - 25% - 2vw); 
+        }
+        .slide-number {
+             left: 25%; 
+             margin-left: 2vw; 
+             top: 10vh; 
+        }
+        .author-thumbnail {
+             left: 25%; 
+             transform: translateX(0); 
+             margin-left: -2.2vw; /* Center based on its width */
+             bottom: 4vh; 
+        }
+         /* Ensure nav items display correctly */
+        .nav {
+            padding: 2vh 3vh; /* Adjust padding based on new viewport reference */
+        }
+        .vertical-text {
+             right: 2vh; /* Adjust based on new viewport reference */
+             font-size: clamp(0.7rem, 1vh, 1rem); 
+        }
+         .navigation {
+             bottom: 8vw; /* Adjust based on new viewport reference */
+             right: 3vh;
+        }
+
+        /* Display orientation message */
         .orientation-message {
-            display: flex; /* Show the orientation message */
+            display: flex;
+            z-index: 10000; /* Ensure it's on top */
         }
     }
-    
-    /* Always display in landscape mode after 5 seconds */
-    .container {
-        display: block !important; /* Always show the main content */
-        transform-origin: top left;
-        transform: scale(calc(100vw / 1024)); /* Scale based on viewport width */
-        width: calc(1024px); /* Set a fixed width */
-        height: calc(100vh / (100vw / 1024)); /* Adjust height to maintain aspect ratio */
-    }
-    
-    /* Fix scaling issues for mobile landscape mode */
-    .slide-sidebar {
-        width: 25% !important; /* Adjust sidebar width */
-    }
-    
-    .header-extension {
-        height: 40px !important; /* Reduce header extension height */
-        left: 25%; /* Adjust position relative to sidebar */
-        /* Ensure width is adjusted if needed based on new left position */
-        width: calc(60% - 25% - 2vw); /* Example: Adjust width considering right padding */
-    }
-    
-    .slide-number {
-        left: 25%; /* Align with sidebar */
-        /* Add margin-left if needed for spacing */
-        margin-left: 2vw; /* Example: add some space */
-        top: 10vh; /* Adjust vertical position slightly */
-    }
-    
-    .author-thumbnail {
-        left: 25%; /* Align with sidebar */
-        /* Adjust transform to center on the new edge */
-        transform: translateX(0); /* Remove the negative transform */
-        /* Add margin-left if needed for centering/spacing */
-        margin-left: -2.2vw; /* Center based on its width (4.4vw / 2) */
-        bottom: 4vh; /* Adjust vertical position slightly */
+
+    /* LANDSCAPE: Scale container */
+    @media (orientation: landscape) {
+        body {
+            overflow-x: hidden; /* Reset body overflow */
+            background-color: #fff4e6; /* Reset background */
+        }
+        .container {
+             transform-origin: top left;
+             /* Reset rotation styles */
+             width: calc(100vw); /* Use 100vw before scaling */
+             height: calc(100vh);
+             transform: scale(calc(100vw / 1024)); /* Apply scaling */
+             /* Adjust width/height AFTER scaling for fixed layout */
+             width: calc(1024px);
+             height: calc(100vh / (100vw / 1024));
+             overflow: hidden;
+             /* Reset position */
+             position: relative;
+             top: auto;
+             left: auto;
+        }
+         /* Apply specific overrides for landscape scaling */
+        .slide-sidebar {
+            width: 25% !important;
+        }
+        .header-extension {
+            height: 40px !important;
+            left: 25%;
+            width: calc(100% - 25% - 2vw);
+        }
+        .slide-number {
+            left: 25%;
+            margin-left: 2vw;
+            top: 10vh;
+        }
+        .author-thumbnail {
+            left: 25%;
+            transform: translateX(0);
+            margin-left: -2.2vw;
+            bottom: 4vh;
+        }
+        /* Reset potentially adjusted nav/vertical text styles */
+        .nav {
+            padding: 2vw 3vw;
+        }
+        .vertical-text {
+             right: 2vw;
+             font-size: clamp(0.7rem, 1vw, 1rem);
+        }
+        .navigation {
+             bottom: 8vh;
+             right: 3vw;
+        }
+        /* Hide orientation message */
+        .orientation-message {
+            display: none;
+        }
     }
 }
