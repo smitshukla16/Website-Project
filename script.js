@@ -31,13 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', handleOrientation);
     window.addEventListener('orientationchange', handleOrientation);
     
-    // Hide orientation message after 5 seconds
-    setTimeout(() => {
-        if (orientationMessage) {
-            orientationMessage.style.display = 'none';
-        }
-    }, 5000);
-    
     // Slider functionality
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
@@ -72,8 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
     
-    // Start the initial auto-slide
-    startAutoSlide();
+    // Hide orientation message after 5 seconds and start auto-slide
+    setTimeout(() => {
+        if (orientationMessage) {
+            orientationMessage.style.display = 'none';
+            // Start auto-slide only after the orientation message disappears
+            startAutoSlide();
+        } else {
+            // If no orientation message (desktop or already landscape), start auto-slide immediately
+            startAutoSlide();
+        }
+    }, 5000);
     
     prevBtn.addEventListener('click', () => {
         showSlide(currentSlide - 1);

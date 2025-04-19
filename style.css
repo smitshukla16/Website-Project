@@ -429,36 +429,38 @@ body {
         }
         .container {
             transform-origin: top left;
-            width: 100vh; /* Use viewport height as width */
-            height: 100vw; /* Use viewport width as height */
+            width: 100vh;
+            height: 100vw;
             transform: rotate(90deg) translateY(-100%);
-            overflow: hidden; /* Clip content within the rotated container */
-
-            /* Position the rotated container correctly */
+            overflow: hidden;
             position: absolute;
             top: 0;
             left: 0;
         }
 
-        /* Adjust child element styles if needed within rotated container */
-        /* These percentages now refer to the container's new dimensions (100vh width) */
+        /* Only modify slide and image to fix overflow */
+        .slide {
+            width: 100vh;
+            height: 100vw;
+        }
+
+        /* Keep all other existing styles unchanged */
         .slide-sidebar {
              width: 25%; 
         }
         .header-extension {
-             height: 40px; 
-             left: 25%; 
+             height: 50px; 
+             left: 15%; 
              width: calc(100% - 25% - 2vw); 
         }
         .slide-number {
-             left: 25%; 
-             margin-left: 2vw; 
-             top: 10vh; 
+             left: 28%; 
+             margin-left: 0vw; 
+             top: 7vh; 
         }
         .author-thumbnail {
-             left: 25%; 
+             left: 23%; 
              transform: translateX(0); 
-             margin-left: -2.2vw; /* Center based on its width */
              bottom: 4vh; 
         }
          /* Ensure nav items display correctly */
