@@ -419,32 +419,33 @@ body {
 
 /* Force landscape view / scaling on mobile devices */
 @media screen and (max-width: 1024px) {
-
-    /* PORTRAIT: Rotate container to simulate landscape */
     @media (orientation: portrait) {
-        /* Hide overflow on body to prevent potential scrollbars */
         body {
             overflow: hidden;
-            background-color: #333; /* Optional: Background for area outside rotated container */
+            background-color: #333;
+            /* Add padding for safe areas */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
+        
         .container {
             transform-origin: top left;
-            width: 100vh;
+            width: calc(var(--vh, 1vh) * 100);
             height: 100vw;
             transform: rotate(90deg) translateY(-100%);
             overflow: hidden;
             position: absolute;
-            top: 0;
+            top: env(safe-area-inset-top); /* Account for notch/status bar */
             left: 0;
+            /* Adjust height to account for safe areas */
+            height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         }
 
-        /* Only modify slide and image to fix overflow */
         .slide {
-            width: 100vh;
-            height: 100vw;
+            width: calc(var(--vh, 1vh) * 100);
+            height: calc(100vw - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         }
-
-        /* Keep all other existing styles unchanged */
+        
+        /* Keep rest of the existing styles unchanged */
         .slide-sidebar {
              width: 25%; 
         }
@@ -463,23 +464,25 @@ body {
              transform: translateX(0); 
              bottom: 4vh; 
         }
-         /* Ensure nav items display correctly */
         .nav {
-            padding: 2vh 3vh; /* Adjust padding based on new viewport reference */
+            padding: 2vh 3vh;
         }
         .vertical-text {
-             right: 2vh; /* Adjust based on new viewport reference */
+             right: 2vh;
              font-size: clamp(0.7rem, 1vh, 1rem); 
         }
-         .navigation {
-             bottom: 8vw; /* Adjust based on new viewport reference */
+        .navigation {
+             bottom: 8vw;
              right: 3vh;
         }
 
-        /* Display orientation message */
         .orientation-message {
             display: flex;
-            z-index: 10000; /* Ensure it's on top */
+            z-index: 10000;
+        }
+
+        .slide.active .progress-ring-circle {
+            animation: progress-stroke 5s linear 5s forwards;
         }
     }
 

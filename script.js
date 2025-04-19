@@ -3,6 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const orientationMessage = document.querySelector('.orientation-message');
     const container = document.querySelector('.container');
     
+    // Set custom viewport height property
+    function setViewportHeight() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    // Initial set
+    setViewportHeight();
+    
+    // Update on resize
+    window.addEventListener('resize', () => {
+        setViewportHeight();
+    });
+    
     // Function to check and handle orientation
     function handleOrientation() {
         // Check if device is mobile (width less than 1024px)
@@ -12,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Desktop view - ensure no transforms/scaling are applied
             document.body.style.transform = 'none';
             document.body.style.width = '100vw';
-            document.body.style.height = 'auto'; // Or 100vh if preferred
+            document.body.style.height = 'auto';
             document.body.style.overflow = 'visible';
             document.body.style.position = 'static';
             
