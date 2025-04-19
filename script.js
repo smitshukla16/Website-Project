@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.querySelector('.prev');
     const nextBtn = document.querySelector('.next');
+    let autoSlideInterval; // Store the interval ID
     
     function showSlide(index) {
         if (index < 0) {
@@ -60,18 +61,29 @@ document.addEventListener('DOMContentLoaded', function() {
         slides[currentSlide].classList.add('active');
     }
     
+    function startAutoSlide() {
+        // Clear any existing interval
+        if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+        }
+        // Start new interval
+        autoSlideInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+    }
+    
+    // Start the initial auto-slide
+    startAutoSlide();
+    
     prevBtn.addEventListener('click', () => {
         showSlide(currentSlide - 1);
+        startAutoSlide(); // Reset the timer
     });
     
     nextBtn.addEventListener('click', () => {
         showSlide(currentSlide + 1);
+        startAutoSlide(); // Reset the timer
     });
-    
-    // Optional: Auto slide
-    setInterval(() => {
-        showSlide(currentSlide + 1);
-    }, 5000);
     
     // Add hover animations for interactive elements
 
